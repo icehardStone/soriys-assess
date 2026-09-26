@@ -465,18 +465,19 @@ async function saveAssessment() {
     basic: JSON.parse(JSON.stringify(form.basic)),
     risks: JSON.parse(JSON.stringify(form.risks)),
     provider: JSON.parse(JSON.stringify(form.provider)),
+    disease: JSON.parse(JSON.stringify(form.disease)),
     diseaseOther: form.diseaseOther,
     medications: JSON.parse(JSON.stringify(form.medications)),
     health: JSON.parse(JSON.stringify(form.health)),
     answers: { ...answers },
-    total: totalScore.value,
+    totalScore: totalScore.value,
     initialLevel: initialLevel.value.level,
     level: finalLevel.value.level,
   }
   console.log(obj)
 
   if(obj.id) {
-    await updateAssessment(obj)
+    await updateAssessment(obj.id, obj)
   } else {
     await createAssessment(obj)
   }

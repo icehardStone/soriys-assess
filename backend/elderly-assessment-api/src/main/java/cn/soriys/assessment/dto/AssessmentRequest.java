@@ -10,6 +10,7 @@ import java.util.Map;
 
 @Data
 public class AssessmentRequest {
+    private Long id;
     private String no;
     private LocalDate assessmentDate;
     private String reason;

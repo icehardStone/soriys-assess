@@ -15,7 +15,7 @@
           <div class="panel">
             <div class="panel-head">
               <h3>最近评估</h3><button class="text-btn"">
-                  <RouterLink to="/assessments">查看全部 →</RouterLink>
+                  <RouterLink to="/main/assessments">查看全部 →</RouterLink>
               </button>
             </div>
             <table>
@@ -33,8 +33,8 @@
                 <tr v-for="r in records.slice(0, 6)" :key="r.id">
                   <td>{{ r.no }}</td>
                   <td><b>{{ r.basic.name || '未填写' }}</b></td>
-                  <td>{{ r.date }}</td>
-                  <td><strong>{{ r.total }}</strong>/90</td>
+                  <td>{{ r.assessmentDate }}</td>
+                  <td><strong>{{ r.totalScore }}</strong>/90</td>
                   <td><span :class="'tag l' + r.level">{{ levelName(r.level) }}</span></td>
                   <td><button class="link" @click="viewRecord(r)">查看</button>
                   <button class="link" @click="editRecord(r)">编辑</button>
@@ -71,7 +71,7 @@ const categories = ref([]), items = ref([]), levels = ref([]), records = ref([])
 const router = useRouter()
 function startNew() { 
   router.push({
-    path:'/assessments/new'
+    name:'AssessmentNew'
   })
 }
 

@@ -34,6 +34,7 @@ public class AssessmentConverter {
 
         AssessmentRecord e = new AssessmentRecord();
 
+        e.setId(r.getId());
         e.setNo(r.getNo());
         e.setAssessmentDate(r.getAssessmentDate());
         e.setReason(r.getReason());
@@ -78,6 +79,7 @@ public class AssessmentConverter {
 
         AssessmentRequest r = new AssessmentRequest();
 
+        r.setId(e.getId());
         r.setNo(e.getNo());
         r.setAssessmentDate(e.getAssessmentDate());
         r.setReason(e.getReason());

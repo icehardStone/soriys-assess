@@ -29,9 +29,9 @@
                 <tr v-for="r in filteredRecords" :key="r.id">
                   <td>{{ r.no }}</td>
                   <td>{{ r.basic.name }}</td>
-                  <td>{{ r.date }}</td>
+                  <td>{{ r.assessmentDate }}</td>
                   <td>{{ r.reason }}</td>
-                  <td>{{ r.total }}/90</td>
+                  <td>{{ r.totalScore }}/90</td>
                   <td><span :class="'tag l' + r.level">{{ levelName(r.level) }}</span></td>
                   <td>
                     <button class="link" @click="viewRecord(r)">查看</button>
