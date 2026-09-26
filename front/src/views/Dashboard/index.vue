@@ -36,8 +36,7 @@
                   <td>{{ r.date }}</td>
                   <td><strong>{{ r.total }}</strong>/90</td>
                   <td><span :class="'tag l' + r.level">{{ levelName(r.level) }}</span></td>
-                  <td>
-                    <button class="link" @click="viewRecord(r)">查看</button>
+                  <td><button class="link" @click="viewRecord(r)">查看</button>
                   <button class="link" @click="editRecord(r)">编辑</button>
                 </td>
                 </tr>

@@ -54,6 +54,8 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+
+const records = ref([]),levels = ref([])
 const router = useRouter()
 const  keyword = ref(''), levelFilter = ref('')
 
@@ -100,7 +102,7 @@ function removeRecord(id) {
 onMounted(async () => { 
     const res = await fetch('/data/assessment-data.json'); 
     const d = await res.json(); 
-    items.value = d.items; 
+    // items.value = d.items; 
     levels.value = d.levels; 
     records.value = JSON.parse(localStorage.getItem('elderlyAssessmentRecords') || '[]') 
 })

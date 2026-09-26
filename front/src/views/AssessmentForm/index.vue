@@ -87,9 +87,9 @@
       </div>
       <h3>A.2.14 近30天照护风险事件</h3>
       <div class="risk-grid">
-        <label v-for="k in Object.keys(form.risks)"
-          >{{ k
-          }}<select v-model.number="form.risks[k]">
+        <label v-for="(k,i) in riskOptions"
+          >{{ k.dictName
+          }}<select v-model.number="form.risks[k.dictVal]">
             <option :value="0">无</option>
             <option :value="1">发生过1次</option>
             <option :value="2">发生过2次</option>
@@ -269,6 +269,16 @@ const categories = ref([]),
   levels = ref([]),
   records = ref([])
 
+
+// 风险
+const riskOptions = [
+  { dictVal: 'Falls', dictName: '跌倒' },
+  { dictVal: 'Wandering', dictName: '走失' }, // 或 Getting lost
+  { dictVal: 'Choking', dictName: '噎食' },
+  { dictVal: 'Suicide/self-harm', dictName: '自杀、自伤' },
+  { dictVal: 'Other', dictName: '其他' },
+]
+
 // 文化程度
 const educationOptions = [
   { dictVal: 'Illiterate', dictName: '文盲' },
@@ -388,7 +398,9 @@ const form = reactive({
     living: [],
     marriage: '未说明',
   },
-  risks: { 跌倒: 0, 走失: 0, 噎食: 0, '自杀、自伤': 0, 其他: 0 },
+  risks: { 
+
+   },
   provider: { name: '', relation: '本人', contact: '', phone: '' },
   disease: [],
   diseaseOther: '',

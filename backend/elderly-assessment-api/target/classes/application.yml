@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: elderly-assessment-api
+  datasource:
+    url: jdbc:postgresql://gomains.cn:5432/elderly_assessment
+    username: ${postgres_user}
+    password: ${postgres_password}
+    driver-class-name: org.postgresql.Driver
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+
+app:
+  jwt:
+    secret: "9f4c2a7e1b8d3f6a0c5e9b2d7a4f1c8e3b6d9a0f2c5e8b1d4a7f0c3e6b9d2a5f"
+    expire-hours: 24
