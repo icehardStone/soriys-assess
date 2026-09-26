@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 public class SysUser {
     @TableId
     private Long id;
+    private String photo;
+    private String email;
+    private Long appId;
     private String username;
     private String password;
     private String realName;

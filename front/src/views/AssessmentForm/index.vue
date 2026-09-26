@@ -252,7 +252,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-
+import { createAssessment,updateAssessment,getAssessment } from '@/api/assess'
 import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
@@ -451,16 +451,16 @@ function categoryScore(name) {
   return (groupedItems.value[name] || []).reduce((s, i) => s + (answers[i.code] ?? 0), 0)
 }
 
-function saveAssessment() {
+async function saveAssessment() {
   if (!form.basic.name) {
     alert('请先填写老人姓名')
     step.value = 1
     return
   }
   const obj = {
-    id: editingId.value || Date.now(),
+    id: editingId.value || null,
     no: form.no,
-    date: form.date,
+    assessmentDate: form.date,
     reason: form.reason,
     basic: JSON.parse(JSON.stringify(form.basic)),
     risks: JSON.parse(JSON.stringify(form.risks)),
@@ -473,17 +473,23 @@ function saveAssessment() {
     initialLevel: initialLevel.value.level,
     level: finalLevel.value.level,
   }
-  const idx = records.value.findIndex((x) => x.id === obj.id)
-  if (idx >= 0) records.value[idx] = obj
-  else records.value.unshift(obj)
-  localStorage.setItem('elderlyAssessmentRecords', JSON.stringify(records.value))
-  page.value = 'records'
+  console.log(obj)
+
+  if(obj.id) {
+    await updateAssessment(obj)
+  } else {
+    await createAssessment(obj)
+  }
+  // const idx = records.value.findIndex((x) => x.id === obj.id)
+  // if (idx >= 0) records.value[idx] = obj
+  // else records.value.unshift(obj)
+  
   step.value = 1
 }
 
 
-function loadAssessment(id) {
-  const rec = records.value.find((x) => String(x.id) === String(id))
+async function loadAssessment(id) {
+  const rec = await getAssessment(id)
   if (!rec) {
     alert('未找到对应的评估记录')
     router.replace('/assessments')
@@ -520,10 +526,9 @@ onMounted(async () => {
   categories.value = d.categories
   items.value = d.items
   levels.value = d.levels
-  records.value = JSON.parse(localStorage.getItem('elderlyAssessmentRecords') || '[]')
 
   if (editingId.value) {
-    loadAssessment(editingId.value)   // ← 关键:回填
+    await loadAssessment(editingId.value)   // ← 关键:回填
   } else {
     // 新建模式
     form.no = 'AS' + Date.now()

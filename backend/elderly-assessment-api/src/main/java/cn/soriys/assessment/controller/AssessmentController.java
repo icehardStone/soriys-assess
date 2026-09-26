@@ -26,7 +26,7 @@ public class AssessmentController {
     }
 
     @GetMapping("/{id}")
-    public AssessmentRecord get(@PathVariable Long id) { return service.get(id); }
+    public AssessmentRequest get(@PathVariable Long id) { return service.get(id); }
 
     @GetMapping
     public Object page(@RequestParam(defaultValue="1") long current,

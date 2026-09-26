@@ -1,33 +1,26 @@
 package cn.soriys.assessment.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+
 
 @Data
 public class AssessmentRequest {
-    @NotBlank private String no;
+    private String no;
     private LocalDate assessmentDate;
     private String reason;
-    @NotBlank private String elderlyName;
-    private String gender;
-    private LocalDate birthDate;
-    private BigDecimal height;
-    private BigDecimal weight;
-    private String ethnicity;
-    private String religion;
-    private String idNo;
-    private String education;
-    private String living;
-    private String marriage;
-    private String risks;
-    private String provider;
-    private String disease;
+    private BasicInfo basic;
+    private RiskInfo risks;
+    private ProviderInfo provider;
+    private List<String> disease;
     private String diseaseOther;
-    private String medications;
-    private String health;
-    private String answers;
+    private List<MedicationInfo> medications;
+    private HealthInfo health;
+    private Map<String, Object> answers;
     private BigDecimal totalScore;
     private Integer initialLevel;
     private Integer finalLevel;

@@ -65,6 +65,8 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
+
+import { pageAssessments } from '@/api/assess'
 const categories = ref([]), items = ref([]), levels = ref([]), records = ref([])
 const router = useRouter()
 function startNew() { 
@@ -84,7 +86,15 @@ onMounted(async () => {
   categories.value = d.categories; 
   items.value = d.items; 
   levels.value = d.levels; 
-  records.value = JSON.parse(localStorage.getItem('elderlyAssessmentRecords') || '[]') 
+  // records.value = JSON.parse(localStorage.getItem('elderlyAssessmentRecords') || '[]') 
+
+  records.value = (await pageAssessments( {
+    current: 1,
+    size: 3,
+    // keyword = 
+  })).records
+
+  
 })
 
 

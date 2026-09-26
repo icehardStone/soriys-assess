@@ -1,6 +1,7 @@
 package cn.soriys.assessment.controller;
 
 import cn.soriys.assessment.dto.*;
+import cn.soriys.assessment.entity.SysUser;
 import cn.soriys.assessment.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,9 +27,8 @@ public class AuthController {
     }
 
     @PutMapping("/profile")
-    public Map<String,Object> profile(@RequestParam(required=false) String realName,
-                                      @RequestParam(required=false) String phone) {
-        service.updateProfile(currentUserId(), realName, phone);
+    public Map<String,Object> profile(@Valid @RequestBody  ProfileRequest r) {
+        service.updateProfile(r);
         return Map.of("message","资料修改成功");
     }
 
