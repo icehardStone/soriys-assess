@@ -148,9 +148,9 @@ function goSettings() {
 
 function handleLogout() {
   showMenu.value = false
-  if (confirm('确定要退出登录吗？')) {
-    localStorage.removeItem('token')
-    router.push('/login')
+  if (window.confirm('确定要退出登录吗？')) {
+    auth.clearAuth()
+    router.replace('/login')
   }
 }
 
