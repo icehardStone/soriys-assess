@@ -32,7 +32,7 @@
                   <td>{{ r.assessmentDate }}</td>
                   <td>{{ r.reason }}</td>
                   <td>{{ r.totalScore }}/90</td>
-                  <td><span :class="'tag l' + r.level">{{ levelName(r.level) }}</span></td>
+                  <td><span :class="'tag l' + r.finalLevel">{{ levelName(r.finalLevel) }}</span></td>
                   <td>
                     <button class="link" @click="viewRecord(r)">查看</button>
                     <button class="link" @click="editRecord(r)">编辑</button>
@@ -53,14 +53,14 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { pageAssessments } from '@/api/assess'
+import { deleteAssessment, pageAssessments } from '@/api/assess'
 
 const records = ref([]),levels = ref([])
 const router = useRouter()
 const  keyword = ref(''), levelFilter = ref('')
 
 const filteredRecords = computed(() => 
-    records.value.filter(r => (!keyword.value || r.basic.name.includes(keyword.value) || r.no.includes(keyword.value)) && (levelFilter.value === '' || String(r.level) === String(levelFilter.value)))
+    records.value.filter(r => (!keyword.value || r.basic.name.includes(keyword.value) || r.no.includes(keyword.value)) && (levelFilter.value === '' || String(r.finalLevel) === String(levelFilter.value)))
 )
 function levelName(n) { 
     return levels.value.find(l => l.level === n)?.name || '未评估' 
@@ -93,10 +93,10 @@ const editRecord = (r) => {
 }
 
 
-function removeRecord(id) { 
+async function removeRecord(id) {
     if (confirm('确定删除这条评估记录吗？')) { 
-        records.value = records.value.filter(x => x.id !== id);
-         localStorage.setItem('elderlyAssessmentRecords', JSON.stringify(records.value)) 
+        await deleteAssessment(id)
+        records.value = records.value.filter(x => x.id !== id)
 } }
 
 onMounted(async () => { 

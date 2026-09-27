@@ -472,7 +472,7 @@ async function saveAssessment() {
     answers: { ...answers },
     totalScore: totalScore.value,
     initialLevel: initialLevel.value.level,
-    level: finalLevel.value.level,
+    finalLevel: finalLevel.value.level,
   }
   console.log(obj)
 
@@ -499,7 +499,7 @@ async function loadAssessment(id) {
 
   editingId.value = rec.id
   form.no = rec.no || ''
-  form.date = rec.date || ''
+  form.date = rec.assessmentDate || ''
   form.reason = rec.reason || 'Initial assessment'
 
   // 合并子对象（避免直接替换成没有默认字段的对象）
