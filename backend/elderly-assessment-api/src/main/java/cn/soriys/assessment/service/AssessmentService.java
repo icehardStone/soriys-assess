@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AssessmentService {
@@ -53,6 +56,36 @@ public class AssessmentService {
 
         // 2. Entity 分页 -> Request 分页
         return entityPage.convert(convert::to_convert);
+    }
+
+    /**
+     * Returns the complete assessment distribution for the dashboard.  This is
+     * intentionally independent of pagination so the figures remain accurate
+     * even when there are more records than the recent-records table displays.
+     */
+    public Map<String, Long> statistics() {
+        Map<String, Long> statistics = new LinkedHashMap<>();
+        statistics.put("total", mapper.selectCount(null));
+        statistics.put("level0", 0L);
+        statistics.put("level1", 0L);
+        statistics.put("level2", 0L);
+        statistics.put("level3", 0L);
+        statistics.put("level4", 0L);
+
+        List<Map<String, Object>> grouped = mapper.selectMaps(
+                Wrappers.<AssessmentRecord>query()
+                        .select("final_level", "COUNT(*) AS count")
+                        .groupBy("final_level")
+        );
+        for (Map<String, Object> row : grouped) {
+            Object levelValue = row.get("final_level");
+            Object countValue = row.get("count");
+            if (levelValue instanceof Number level && countValue instanceof Number count
+                    && level.intValue() >= 0 && level.intValue() <= 4) {
+                statistics.put("level" + level.intValue(), count.longValue());
+            }
+        }
+        return statistics;
     }
 
     @Transactional
