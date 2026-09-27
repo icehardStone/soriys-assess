@@ -3,7 +3,6 @@ services:
     build:
       context: ./backend/elderly-assessment-api
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://gomains:5432/${POSTGRES_DB:-elderly_assessment}
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-elderly_assessment}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
     restart: unless-stopped

@@ -29,6 +29,9 @@ coverage
 
 .eslintcache
 
+**/target
+target
+
 # Cypress
 /cypress/videos/
 /cypress/screenshots/
