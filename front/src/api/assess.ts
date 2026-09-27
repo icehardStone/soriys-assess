@@ -10,20 +10,11 @@ export interface Risks {
 
 // 新建/更新评估的请求体
 export interface AssessmentRequest {
+  id?: number
   no?: string                    // 编号
   assessmentDate?: string        // 评估日期（YYYY-MM-DD）
   reason?: string                // 评估原因
-  elderlyName?: string           // 老人姓名
-  gender?: string                // 性别
-  birthDate?: string             // 出生日期
-  height?: number                // 身高 cm
-  weight?: number                // 体重 kg
-  ethnicity?: string             // 民族
-  religion?: string              // 宗教
-  idNo?: string                  // 身份证号
-  education?: string             // 文化程度
-  living?: string                // 居住情况
-  marriage?: string              // 婚姻状况
+  basic?: { name?: string }
   risks?: Risks                  // 风险
   provider?: string              // 提供者
   disease?: string[]             // 疾病
@@ -32,8 +23,8 @@ export interface AssessmentRequest {
   health?: string                // 健康状况
   answers?: Record<string, any>  // 答题
   totalScore?: number            // 总分
-  initialLevel?: string          // 初评等级
-  finalLevel?: string            // 最终等级
+  initialLevel?: number          // 初评等级
+  finalLevel?: number            // 最终等级
 }
 
 // 后端返回的评估记录
@@ -42,6 +33,15 @@ export interface AssessmentRecord extends AssessmentRequest {
   createdBy?: number
   createdAt?: string
   updatedAt?: string
+}
+
+export interface AssessmentStatistics {
+  total: number
+  level0: number
+  level1: number
+  level2: number
+  level3: number
+  level4: number
 }
 
 // 分页返回
@@ -97,6 +97,11 @@ export function pageAssessments(
   return request.get('/assessments', {
     params: { current, size, keyword },
   })
+}
+
+/** 获取首页统计数据（不受最近记录分页影响）。 */
+export function getAssessmentStatistics(): Promise<AssessmentStatistics> {
+  return request.get('/assessments/statistics')
 }
 
 /**

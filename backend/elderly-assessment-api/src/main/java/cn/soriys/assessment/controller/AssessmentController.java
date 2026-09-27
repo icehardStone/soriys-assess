@@ -35,6 +35,11 @@ public class AssessmentController {
         return service.page(current, size, keyword);
     }
 
+    @GetMapping("/statistics")
+    public Map<String, Long> statistics() {
+        return service.statistics();
+    }
+
     @DeleteMapping("/{id}")
     public Map<String,Object> delete(@PathVariable Long id) {
         service.delete(id); return Map.of("message","删除成功");
