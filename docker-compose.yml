@@ -22,14 +22,14 @@ services:
     labels:
       - "traefik.docker.network=traefik-network"
       - "traefik.http.services.assess-web.loadbalancer.server.port=80"
-      - "traefik.http.routers.note.rule=Host(`assess.gomains.cn`)"
-      - "traefik.http.routers.note.entrypoints=websecure"
-      - "traefik.http.routers.note.tls=true"
-      - "traefik.http.routers.note.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.assess.rule=Host(`assess.gomains.cn`)"
+      - "traefik.http.routers.assess.entrypoints=websecure"
+      - "traefik.http.routers.assess.tls=true"
+      - "traefik.http.routers.assess.tls.certresolver=letsencrypt"
 
-      - "traefik.http.routers.note-http.rule=Host(`assess.gomains.cn`)"
-      - "traefik.http.routers.note-http.entrypoints=web"
-      - "traefik.http.routers.note-http.middlewares=https-redirect"
+      - "traefik.http.routers.assess-http.rule=Host(`assess.gomains.cn`)"
+      - "traefik.http.routers.assess-http.entrypoints=web"
+      - "traefik.http.routers.assess-http.middlewares=https-redirect"
       - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
 networks:
