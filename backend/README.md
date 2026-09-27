@@ -16,13 +16,19 @@
 CREATE DATABASE elderly_assessment;
 ```
 
-然后执行：
+修改 `src/main/resources/application.yml` 中的数据库用户名和密码后直接启动应用即可。Flyway 会在应用启动时自动执行 `src/main/resources/db/migration` 中尚未执行的增量脚本，并将执行记录保存到 `flyway_schema_history` 表。
 
-```bash
-psql -U postgres -d elderly_assessment -f src/main/resources/schema.sql
+已有数据库也可以直接升级：配置启用了 `baseline-on-migrate`，Flyway 会先以版本 `0` 建立基线，再执行后续迁移。
+
+### 数据库增量脚本规范
+
+新增数据库变更时，在 `src/main/resources/db/migration` 下创建新的版本化 SQL 文件，文件名必须遵循：
+
+```text
+V<版本号>__<变更说明>.sql
 ```
 
-修改 `src/main/resources/application.yml` 中的数据库用户名和密码。
+例如 `V3__add_assessment_status.sql`。已在生产或共享环境执行过的迁移脚本不可修改；请通过新的版本脚本修正数据库结构。
 
 ## 2. 启动
 
