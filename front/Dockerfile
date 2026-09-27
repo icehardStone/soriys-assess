@@ -1,7 +1,12 @@
 FROM node:24-alpine AS build
 WORKDIR /app
+
+# 配置腾讯云 npm 镜像
+RUN npm config set registry https://mirrors.cloud.tencent.com/npm/
+
 COPY package.json package-lock.json ./
 RUN npm ci
+
 COPY . .
 RUN npm run build
 
