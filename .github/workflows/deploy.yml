@@ -24,7 +24,7 @@ jobs:
         run: |
           ssh -p ${{ secrets.SSH_PORT || 22 }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             set -e
-            cd /opt/assess
+            cd /opt/assess/soriys-assess
             
             # 拉取最新代码
             git fetch --all

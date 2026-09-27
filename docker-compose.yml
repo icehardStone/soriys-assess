@@ -6,6 +6,8 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-elderly_assessment}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-change-me}
     restart: unless-stopped
+    networks:
+      - traefik-network
 
   web:
     build:
@@ -15,3 +17,20 @@ services:
     depends_on:
       - api
     restart: unless-stopped
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.http.routers.note.rule=Host(`assess.gomains.cn`)"
+      - "traefik.http.routers.note.entrypoints=websecure"
+      - "traefik.http.routers.note.tls=true"
+      - "traefik.http.routers.note.tls.certresolver=letsencrypt"
+
+      - "traefik.http.routers.note-http.rule=Host(`assess.gomains.cn`)"
+      - "traefik.http.routers.note-http.entrypoints=web"
+      - "traefik.http.routers.note-http.middlewares=https-redirect"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.https-redirect.redirectscheme.permanent=true"
+networks:
+  traefik-network:
+    external: true
+    driver: bridge
