@@ -20,6 +20,8 @@ services:
     networks:
       - traefik-network
     labels:
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.services.assess-web.loadbalancer.server.port=80"
       - "traefik.http.routers.note.rule=Host(`assess.gomains.cn`)"
       - "traefik.http.routers.note.entrypoints=websecure"
       - "traefik.http.routers.note.tls=true"
