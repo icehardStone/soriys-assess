@@ -1,7 +1,13 @@
 <template>
   <div class="auth-container">
     <div class="auth-card">
-      <h2 class="title">用户登录</h2>
+      <header class="auth-header">
+        <p class="eyebrow">老年人健康评估系统</p>
+        <h1 class="title">欢迎登录</h1>
+        <p class="system-description">
+          面向养老服务机构的健康管理平台，帮助您完成长者健康信息采集、风险评估、评估记录管理，并为个性化照护提供参考。
+        </p>
+      </header>
 
       <form @submit.prevent="handleLogin" class="form">
         <div class="form-item">
@@ -119,9 +125,29 @@ async function handleLogin() {
 
 .title {
   text-align: center;
-  margin-bottom: 28px;
-  font-size: 22px;
+  margin: 0;
+  font-size: 24px;
   color: #333;
+}
+
+.auth-header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #667eea;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.system-description {
+  margin: 12px 0 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.65;
+  text-align: left;
 }
 
 .form {
