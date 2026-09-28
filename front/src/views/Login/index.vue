@@ -1,12 +1,16 @@
 <template>
   <div class="auth-container">
+    <section class="system-introduction" aria-labelledby="system-name">
+      <p class="eyebrow">老年人健康评估系统</p>
+      <h1 id="system-name" class="introduction-title">让每一次照护更有依据</h1>
+      <p class="system-description">
+        面向养老服务机构的健康管理平台，帮助您完成长者健康信息采集、风险评估、评估记录管理，并为个性化照护提供参考。
+      </p>
+    </section>
+
     <div class="auth-card">
       <header class="auth-header">
-        <p class="eyebrow">老年人健康评估系统</p>
-        <h1 class="title">欢迎登录</h1>
-        <p class="system-description">
-          面向养老服务机构的健康管理平台，帮助您完成长者健康信息采集、风险评估、评估记录管理，并为个性化照护提供参考。
-        </p>
+        <h2 class="title">欢迎登录</h2>
       </header>
 
       <form @submit.prevent="handleLogin" class="form">
@@ -110,8 +114,15 @@ async function handleLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 64px;
   min-height: 100vh;
+  padding: 32px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.system-introduction {
+  max-width: 440px;
+  color: #fff;
 }
 
 .auth-card {
@@ -130,6 +141,12 @@ async function handleLogin() {
   color: #333;
 }
 
+.introduction-title {
+  margin: 0;
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.25;
+}
+
 .auth-header {
   margin-bottom: 28px;
   text-align: center;
@@ -137,17 +154,34 @@ async function handleLogin() {
 
 .eyebrow {
   margin: 0 0 8px;
-  color: #667eea;
+  color: #e4e7ff;
   font-size: 14px;
   font-weight: 600;
 }
 
 .system-description {
-  margin: 12px 0 0;
-  color: #666;
-  font-size: 14px;
-  line-height: 1.65;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 16px;
+  line-height: 1.75;
   text-align: left;
+}
+
+@media (max-width: 760px) {
+  .auth-container {
+    flex-direction: column;
+    gap: 32px;
+    align-items: stretch;
+    padding: 48px 24px;
+  }
+
+  .system-introduction {
+    max-width: none;
+  }
+
+  .auth-card {
+    max-width: none;
+  }
 }
 
 .form {
