@@ -12,6 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
   const realName = computed(() => user.value?.realName || '')
   const email = computed(() => user.value?.email || user.value?.emal || '')
   const photo = computed(() => user.value?.photo || '')
+  const appId = computed(() => user.value?.appId || null)
 
   // ===== actions =====
   function setAuth(newToken, newUser) {
@@ -41,6 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
     realName,
     email,
     photo,
+    appId,
     setAuth,
     setUser,
     clearAuth,

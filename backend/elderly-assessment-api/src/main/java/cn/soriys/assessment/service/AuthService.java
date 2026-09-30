@@ -55,7 +55,7 @@ public class AuthService {
         if (u == null || !Boolean.TRUE.equals(u.getEnabled()) || !encoder.matches(r.getPassword(), u.getPassword()))
             throw new IllegalArgumentException("用户名或密码错误");
         return Map.of("token", jwt.createToken(u.getId(), u.getUsername()),
-                      "user", Map.of("id", u.getId(), "username", u.getUsername(), "realName", u.getRealName(), "photo", u.getPhoto(), "emal", u.getEmail()));
+                      "user", Map.of("id", u.getId(), "username", u.getUsername(), "realName", u.getRealName(), "photo", u.getPhoto(), "emal", u.getEmail(), "appId", u.getAppId()));
     }
 
     @Transactional

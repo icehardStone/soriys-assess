@@ -24,6 +24,7 @@ export interface UserInfo {
   email?: string
   phone?: string
   photo?: string
+  appId?: number
 }
 
 export interface LoginResponse {
@@ -77,7 +78,7 @@ export function getCurrentUser(): Promise<UserInfo> {
 }
 
 /**
- * 
+ * 更新个人资料
  */
 export function  profile(form:UserInfo): Promise<ProfileResponse> {
   return  request.put('/auth/profile',form)
