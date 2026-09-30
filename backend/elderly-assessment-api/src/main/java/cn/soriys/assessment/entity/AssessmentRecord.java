@@ -36,6 +36,7 @@ public class AssessmentRecord {
     private BigDecimal totalScore;
     private Integer initialLevel;
     private Integer finalLevel;
+    private Long appId;
     private Long createdBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
