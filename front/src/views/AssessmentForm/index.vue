@@ -7,7 +7,9 @@
       </div>
       <div>
       <button class="ghost" @click="router.push('/assessments')">取消</button>
-        <button class="primary" @click="saveAssessment">保存评估</button>
+        <button class="primary" @click="saveAssessment" :disabled="saving">
+        {{ saving ? '保存中...' : '保存评估' }}
+      </button>
       </div>
     </div>
     <div class="steps">
@@ -244,7 +246,9 @@
       </div>
       <div class="footer-actions">
         <button class="ghost" @click="step = 2">← 返回修改</button
-        ><button class="primary big" @click="saveAssessment">保存并完成评估</button>
+        ><button class="primary big" @click="saveAssessment" :disabled="saving">
+          {{ saving ? '保存中...' : '保存并完成评估' }}
+        </button>
       </div>
     </div>
   </div>
@@ -384,29 +388,29 @@ const lives = [
 const form = reactive({
   no: '',
   date: '',
-  reason: '首次评估',
+  reason: 'Initial assessment',
   basic: {
     name: '',
-    gender: '男',
+    gender: 'Male',
     birthDate: '',
     height: '',
     weight: '',
     ethnicity: '汉族',
-    religion: '无',
+    religion: 'NoReligion',
     idNo: '',
-    education: '不详',
+    education: 'Unknown',
     living: [],
-    marriage: '未说明',
+    marriage: 'Not specified',
   },
   risks: { 
 
    },
-  provider: { name: '', relation: '本人', contact: '', phone: '' },
+  provider: { name: '', relation: 'Self', contact: '', phone: '' },
   disease: [],
   diseaseOther: '',
   medications: [{ name: '', method: '', dose: '', frequency: '' }],
   health: {
-    pressure: '无',
+    pressure: 'None',
     joint: '没有影响日常生活功能',
     pain: '无疼痛',
     malnutrition: '无',
@@ -451,12 +455,16 @@ function categoryScore(name) {
   return (groupedItems.value[name] || []).reduce((s, i) => s + (answers[i.code] ?? 0), 0)
 }
 
+const saving = ref(false)
+
 async function saveAssessment() {
   if (!form.basic.name) {
     alert('请先填写老人姓名')
     step.value = 1
     return
   }
+  if (saving.value) return
+  saving.value = true
   const obj = {
     id: editingId.value || null,
     no: form.no,
@@ -474,18 +482,20 @@ async function saveAssessment() {
     initialLevel: initialLevel.value.level,
     finalLevel: finalLevel.value.level,
   }
-  console.log(obj)
 
-  if(obj.id) {
-    await updateAssessment(obj.id, obj)
-  } else {
-    await createAssessment(obj)
+  try {
+    if (obj.id) {
+      await updateAssessment(obj.id, obj)
+    } else {
+      await createAssessment(obj)
+    }
+    alert(editingId.value ? '评估记录更新成功' : '评估记录创建成功')
+    router.push('/assessments')
+  } catch (e) {
+    alert('保存失败：' + (e?.message || e))
+  } finally {
+    saving.value = false
   }
-  // const idx = records.value.findIndex((x) => x.id === obj.id)
-  // if (idx >= 0) records.value[idx] = obj
-  // else records.value.unshift(obj)
-  
-  step.value = 1
 }
 
 
