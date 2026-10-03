@@ -28,16 +28,20 @@ public class AssessmentService {
 
     private AssessmentConverter convert = new AssessmentConverter();
 
-    private Long getCurrentUserAppId() {
-        Long userId = Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
+    private Long getUserAppId(Long userId) {
         SysUser user = userMapper.selectById(userId);
         return user != null ? user.getAppId() : null;
+    }
+
+    private Long getCurrentUserAppId() {
+        Long userId = Long.valueOf(SecurityContextHolder.getContext().getAuthentication().getName());
+        return getUserAppId(userId);
     }
 
     @Transactional
     public AssessmentRecord create(AssessmentRequest r, Long userId) {
         AssessmentRecord e = convert.from_convert(r);
-        Long appId = getCurrentUserAppId();
+        Long appId = getUserAppId(userId);
         e.setAppId(appId);
         e.setCreatedBy(userId); 
         e.setCreatedAt(LocalDateTime.now()); 
