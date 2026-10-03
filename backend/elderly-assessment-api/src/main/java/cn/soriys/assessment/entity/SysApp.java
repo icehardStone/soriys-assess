@@ -25,6 +25,8 @@ public class SysApp {
 
     private String description;
 
+    private Long creatorId;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

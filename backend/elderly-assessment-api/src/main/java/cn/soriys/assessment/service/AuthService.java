@@ -47,6 +47,11 @@ public class AuthService {
         u.setPhoto(r.getPhoto());
         mapper.insert(u);
 
+        // 注册者即为应用创建者
+        app.setCreatorId(u.getId());
+        app.setUpdatedAt(LocalDateTime.now());
+        this.appService.updateById(app);
+
         return Map.of("id", u.getId(), "username", u.getUsername());
     }
 

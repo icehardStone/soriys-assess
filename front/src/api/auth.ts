@@ -90,3 +90,58 @@ export function  profile(form:UserInfo): Promise<ProfileResponse> {
 export function changePassword(data: ChangePasswordRequest): Promise<void> {
   return request.post('/auth/password', data)
 }
+
+// ===== 应用信息相关 =====
+
+export interface AppInfo {
+  id: number
+  appName: string
+  appKey?: string
+  appSecret?: string
+  enabled?: boolean
+  description?: string
+  creatorId?: number
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface AppUserInfo {
+  id: number
+  username: string
+  realName?: string
+  phone?: string
+  email?: string
+  photo?: string
+  appId?: number
+  enabled?: boolean
+  createdAt?: string
+  updatedAt?: string
+}
+
+export interface AppCurrentResponse {
+  app: AppInfo
+  users: AppUserInfo[]
+  isCreator: boolean
+}
+
+export interface InviteRequest {
+  username: string
+  password: string
+  realName?: string
+  phone?: string
+  email?: string
+}
+
+/**
+ * 获取当前用户所在应用的信息（含应用下所有用户、是否为创建者）
+ */
+export function getCurrentApp(): Promise<AppCurrentResponse> {
+  return request.get('/apps/current')
+}
+
+/**
+ * 邀请用户加入当前应用（仅应用创建者可操作）
+ */
+export function inviteUser(data: InviteRequest): Promise<{ id: number; username: string }> {
+  return request.post('/apps/invite', data)
+}
