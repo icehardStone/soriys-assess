@@ -48,11 +48,19 @@ public class AssessmentService {
 
     @Transactional
     public AssessmentRecord update(Long id, AssessmentRequest r, Long userId) {
+        AssessmentRecord existing = mapper.selectById(id);
+        if (existing == null) throw new IllegalArgumentException("评估记录不存在");
+        // Verify that the record belongs to current user's app
+        Long currentAppId = getCurrentUserAppId();
+        if (currentAppId != null && !currentAppId.equals(existing.getAppId())) {
+            throw new IllegalArgumentException("无权修改此评估记录");
+        }
         AssessmentRecord e = convert.from_convert(r);
-        Long appId = getCurrentUserAppId();
-        e.setId(id); 
-        e.setAppId(appId);
-        e.setCreatedBy(userId); 
+        e.setId(id);
+        // Preserve audit fields and appId from the existing record
+        e.setAppId(existing.getAppId());
+        e.setCreatedBy(existing.getCreatedBy());
+        e.setCreatedAt(existing.getCreatedAt());
         e.setUpdatedAt(LocalDateTime.now());
         if (mapper.updateById(e) == 0) throw new IllegalArgumentException("评估记录不存在");
         return mapper.selectById(id);
@@ -121,6 +129,13 @@ public class AssessmentService {
 
     @Transactional
     public void delete(Long id) {
+        AssessmentRecord existing = mapper.selectById(id);
+        if (existing == null) throw new IllegalArgumentException("评估记录不存在");
+        // Verify that the record belongs to current user's app
+        Long currentAppId = getCurrentUserAppId();
+        if (currentAppId != null && !currentAppId.equals(existing.getAppId())) {
+            throw new IllegalArgumentException("无权删除此评估记录");
+        }
         if (mapper.deleteById(id) == 0) throw new IllegalArgumentException("评估记录不存在");
     }
 }
