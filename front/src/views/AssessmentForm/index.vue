@@ -272,11 +272,11 @@ const categories = ref([]),
 
 // 风险
 const riskOptions = [
-  { dictVal: 'Falls', dictName: '跌倒' },
-  { dictVal: 'Wandering', dictName: '走失' }, // 或 Getting lost
-  { dictVal: 'Choking', dictName: '噎食' },
-  { dictVal: 'Suicide/self-harm', dictName: '自杀、自伤' },
-  { dictVal: 'Other', dictName: '其他' },
+  { dictVal: 'falls', dictName: '跌倒' },
+  { dictVal: 'wandering', dictName: '走失' },
+  { dictVal: 'choking', dictName: '噎食' },
+  { dictVal: 'suicide/self-harm', dictName: '自杀、自伤' },
+  { dictVal: 'other', dictName: '其他' },
 ]
 
 // 文化程度
@@ -384,29 +384,27 @@ const lives = [
 const form = reactive({
   no: '',
   date: '',
-  reason: '首次评估',
+  reason: 'Initial assessment',
   basic: {
     name: '',
-    gender: '男',
+    gender: 'Male',
     birthDate: '',
     height: '',
     weight: '',
     ethnicity: '汉族',
-    religion: '无',
+    religion: 'NoReligion',
     idNo: '',
-    education: '不详',
+    education: 'Unknown',
     living: [],
-    marriage: '未说明',
+    marriage: 'Not specified',
   },
-  risks: { 
-
-   },
-  provider: { name: '', relation: '本人', contact: '', phone: '' },
+  risks: {},
+  provider: { name: '', relation: 'Self', contact: '', phone: '' },
   disease: [],
   diseaseOther: '',
   medications: [{ name: '', method: '', dose: '', frequency: '' }],
   health: {
-    pressure: '无',
+    pressure: 'None',
     joint: '没有影响日常生活功能',
     pain: '无疼痛',
     malnutrition: '无',
@@ -457,12 +455,19 @@ async function saveAssessment() {
     step.value = 1
     return
   }
+
+  // 将空字符串的数值/日期字段转为 null，避免后端反序列化失败
+  const basic = JSON.parse(JSON.stringify(form.basic))
+  if (basic.height === '' || basic.height === null) basic.height = null
+  if (basic.weight === '' || basic.weight === null) basic.weight = null
+  if (!basic.birthDate) basic.birthDate = null
+
   const obj = {
     id: editingId.value || null,
     no: form.no,
-    assessmentDate: form.date,
+    assessmentDate: form.date || null,
     reason: form.reason,
-    basic: JSON.parse(JSON.stringify(form.basic)),
+    basic,
     risks: JSON.parse(JSON.stringify(form.risks)),
     provider: JSON.parse(JSON.stringify(form.provider)),
     disease: JSON.parse(JSON.stringify(form.disease)),
@@ -474,18 +479,19 @@ async function saveAssessment() {
     initialLevel: initialLevel.value.level,
     finalLevel: finalLevel.value.level,
   }
-  console.log(obj)
 
-  if(obj.id) {
-    await updateAssessment(obj.id, obj)
-  } else {
-    await createAssessment(obj)
+  try {
+    if (obj.id) {
+      await updateAssessment(obj.id, obj)
+    } else {
+      await createAssessment(obj)
+    }
+    alert('评估已保存成功')
+    router.push('/main/assessments')
+  } catch (err) {
+    console.error(err)
+    alert('保存失败：' + (err?.message || '未知错误'))
   }
-  // const idx = records.value.findIndex((x) => x.id === obj.id)
-  // if (idx >= 0) records.value[idx] = obj
-  // else records.value.unshift(obj)
-  
-  step.value = 1
 }
 
 
