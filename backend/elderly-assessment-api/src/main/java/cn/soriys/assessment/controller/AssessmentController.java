@@ -31,8 +31,9 @@ public class AssessmentController {
     @GetMapping
     public Object page(@RequestParam(defaultValue="1") long current,
                        @RequestParam(defaultValue="10") long size,
-                       @RequestParam(required=false) String keyword) {
-        return service.page(current, size, keyword);
+                       @RequestParam(required=false) String keyword,
+                       @RequestParam(required=false) Integer level) {
+        return service.page(current, size, keyword, level);
     }
 
     @GetMapping("/statistics")

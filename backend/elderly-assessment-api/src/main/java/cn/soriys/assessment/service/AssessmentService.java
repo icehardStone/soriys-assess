@@ -78,7 +78,7 @@ public class AssessmentService {
         return r;
     }
 
-    public IPage<AssessmentRequest> page(long current, long size, String keyword) {
+    public IPage<AssessmentRequest> page(long current, long size, String keyword, Integer level) {
         Long appId = getCurrentUserAppId();
         // 1. 查询 Entity 分页
         IPage<AssessmentRecord> entityPage = mapper.selectPage(
@@ -89,6 +89,7 @@ public class AssessmentService {
                     q -> q.like(AssessmentRecord::getElderlyName, keyword)
                         .or().like(AssessmentRecord::getNo, keyword)
                         .or().like(AssessmentRecord::getIdNo, keyword))
+                .eq(level != null, AssessmentRecord::getFinalLevel, level)
                 .orderByDesc(AssessmentRecord::getCreatedAt)
         );
 
