@@ -58,6 +58,7 @@ export interface AssessmentPageParams {
   current?: number
   size?: number
   keyword?: string
+  level?: number
 }
 /**
  * 新建评估
@@ -93,9 +94,9 @@ export function getAssessment(id: number): Promise<AssessmentRecord> {
 export function pageAssessments(
   params: AssessmentPageParams = {}
 ): Promise<PageResult<AssessmentRecord>> {
-  const { current = 1, size = 10, keyword } = params
+  const { current = 1, size = 10, keyword, level } = params
   return request.get('/assessments', {
-    params: { current, size, keyword },
+    params: { current, size, keyword, level },
   })
 }
 
